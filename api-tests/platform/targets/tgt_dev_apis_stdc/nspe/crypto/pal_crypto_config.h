@@ -236,12 +236,12 @@
 #define ARCH_TEST_SHA256
 #define ARCH_TEST_SHA384
 #define ARCH_TEST_SHA512
-// #define ARCH_TEST_SHA512_224
-// #define ARCH_TEST_SHA512_256
-// #define ARCH_TEST_SHA3_224
-// #define ARCH_TEST_SHA3_256
-// #define ARCH_TEST_SHA3_384
-// #define ARCH_TEST_SHA3_512
+#define ARCH_TEST_SHA512_224
+#define ARCH_TEST_SHA512_256
+#define ARCH_TEST_SHA3_224
+#define ARCH_TEST_SHA3_256
+#define ARCH_TEST_SHA3_384
+#define ARCH_TEST_SHA3_512
 
 /**
  * \def ARCH_TEST_HKDF
@@ -262,7 +262,6 @@
  * Comment macros to disable the types
  */
 #define ARCH_TEST_CMAC
-#define ARCH_TEST_GMAC
 #define ARCH_TEST_HMAC
 
 /**
