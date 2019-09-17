@@ -216,7 +216,10 @@ val_status_t val_nvmem_read(uint32_t offset, void *buffer, int size)
         return status;
    }
 
-   return pal_nvmem_read_ns(memory_desc->start, offset, buffer, size);
+   status = pal_nvmem_read_ns(memory_desc->start, offset, buffer, size);
+   val_print(PRINT_ERROR, "\tpal_nvmem_read_ns. status=0x%x\n", status);
+   return status;
+
 }
 
 /*

@@ -59,6 +59,7 @@ int32_t psa_sst_get_data_check(caller_security_t caller)
     /* Call get function with incorrect buffer length  */
     val->print(PRINT_TEST, "[Check 1] Call get API with incorrect length\n", 0);
     memset(read_buff, 0, TEST_BUFF_SIZE);
+    val->print(PRINT_TEST, "[Check 1.25] p_data_length=%p\n", p_data_length);
     status = SST_FUNCTION(s004_data[5].api, uid, 0, TEST_BUFF_SIZE, read_buff, &p_data_length);
     TEST_ASSERT_EQUAL(status, s004_data[5].status, TEST_CHECKPOINT_NUM(6));
     for (j = 0; j < TEST_BUFF_SIZE; j++)
@@ -66,6 +67,8 @@ int32_t psa_sst_get_data_check(caller_security_t caller)
         TEST_ASSERT_EQUAL(read_buff[j], 0, TEST_CHECKPOINT_NUM(7));
     }
     /* Expect p_data_length = 0,  when psa get function is not unsuccessful as in previous case */
+    val->print(PRINT_TEST, "[Check 1.5] p_data_length=%p\n", p_data_length);
+
     TEST_ASSERT_EQUAL(p_data_length, 0, TEST_CHECKPOINT_NUM(8));
 
     /* Call get function with CORRECT buffer length  */

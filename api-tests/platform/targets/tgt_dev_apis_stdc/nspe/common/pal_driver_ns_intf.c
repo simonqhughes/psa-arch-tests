@@ -47,24 +47,30 @@ static uint8_t g_nvmem[NVMEM_SIZE];
 **/
 static int nvmem_check_bounds(addr_t base, uint32_t offset, int size)
 {
+    return PAL_STATUS_SUCCESS;
     if (base != NVMEM_BASE)
     {
+	    printf("\tNVMEM_BASE=%lu, %x\n", base, NVMEM_BASE);
         return PAL_STATUS_ERROR;
     }
     if (offset > NVMEM_SIZE)
     {
+	    printf("\tNVMEM_SIZE\n");
         return PAL_STATUS_ERROR;
     }
     if (size < 0)
     {
+	    printf("\tsize\n");
         return PAL_STATUS_ERROR;
     }
     if (offset > INT_MAX - size)
     {
+	    printf("\toffset\n");
         return PAL_STATUS_ERROR;
     }
     if (offset + size > NVMEM_SIZE)
     {
+	    printf("\tNVMEM_SIZE\n");
         return PAL_STATUS_ERROR;
     }
     return PAL_STATUS_SUCCESS;
