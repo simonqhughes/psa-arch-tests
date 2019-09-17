@@ -99,9 +99,19 @@ int32_t psa_sst_valid_offset_success(caller_security_t caller)
     {
          data_len = TEST_BUFF_SIZE - offset;
          memset(read_buff, 0, TEST_BUFF_SIZE);
+         val->print(PRINT_TEST, "[Check 1.5] data_len=%u\n", data_len);
+         val->print(PRINT_TEST, "[Check 1.6.0] offset=%u\n", offset);
          status = SST_FUNCTION(s008_data[2].api, uid, offset, data_len, read_buff, &p_data_length);
+         val->print(PRINT_TEST, "[Check 1.6.0.1] data_len=%u\n", data_len);
          TEST_ASSERT_EQUAL(status, s008_data[2].status, TEST_CHECKPOINT_NUM(2));
+         val->print(PRINT_TEST, "[Check 1.6.1] data_len=%u\n", data_len);
          TEST_ASSERT_MEMCMP(read_buff, write_buff + offset, data_len, TEST_CHECKPOINT_NUM(3));
+         val->print(PRINT_TEST, "[Check 1.6.2] data_len=%u\n", data_len);
+         val->print(PRINT_TEST, "[Check 1.6.3] offset=%u\n", offset);
+         val->print(PRINT_TEST, "[Check 1.6.4] p_data_length=%u\n", p_data_length);
+
+         // fix-up: re-compute data_len again:
+         data_len = TEST_BUFF_SIZE - offset;
          TEST_ASSERT_EQUAL(p_data_length, data_len, TEST_CHECKPOINT_NUM(4));
          offset >>= 1;
      }
