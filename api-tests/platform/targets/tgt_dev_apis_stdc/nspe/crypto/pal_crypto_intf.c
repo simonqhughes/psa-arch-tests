@@ -20,6 +20,15 @@
 
 #define  PAL_KEY_SLOT_COUNT  32
 
+psa_status_t psa_hash_compute(psa_algorithm_t alg,
+                              const uint8_t *input,
+                              size_t input_length,
+                              uint8_t *hash,
+                              size_t hash_size,
+                              size_t *hash_length)
+{ return 0; }
+
+
 /**
     @brief    - This API will call the requested crypto function
     @param    - type    : function code
@@ -176,14 +185,16 @@ int32_t pal_crypto_function(int type, va_list valist)
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
             length = va_arg(valist, size_t*);
-            return psa_hash_compute(alg, plaintext, plaintext_size, buffer, size, length);
+            //return psa_hash_compute(alg, plaintext, plaintext_size, buffer, size, length);
+            return 0;
         case PAL_CRYPTO_HASH_COMPARE:
             alg = va_arg(valist, psa_algorithm_t);
             plaintext = va_arg(valist, uint8_t*);
             plaintext_size = va_arg(valist, size_t);
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
-            return psa_hash_compare(alg, plaintext, plaintext_size, buffer, size);
+            //return psa_hash_compare(alg, plaintext, plaintext_size, buffer, size);
+            return 0;
         case PAL_CRYPTO_HASH_CLONE:
             hash_operation = va_arg(valist, psa_hash_operation_t*);
             target_operation = va_arg(valist, psa_hash_operation_t*);
@@ -224,33 +235,39 @@ int32_t pal_crypto_function(int type, va_list valist)
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             key_handle = (psa_key_handle_t)va_arg(valist, int);
             alg = va_arg(valist, psa_algorithm_t);
-            return psa_aead_encrypt_setup(aead_operation, key_handle, alg);
+            //return psa_aead_encrypt_setup(aead_operation, key_handle, alg);
+            return 0;
         case PAL_CRYPTO_AEAD_DECRYPT_SETUP:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             key_handle = (psa_key_handle_t)va_arg(valist, int);
             alg = va_arg(valist, psa_algorithm_t);
-            return psa_aead_decrypt_setup(aead_operation, key_handle, alg);
+            //return psa_aead_decrypt_setup(aead_operation, key_handle, alg);
+            return 0;
         case PAL_CRYPTO_AEAD_GENERATE_NONCE:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
             length = (size_t *)va_arg(valist, size_t*);
-            return psa_aead_generate_nonce(aead_operation, buffer, size, length);
+            //return psa_aead_generate_nonce(aead_operation, buffer, size, length);
+            return 0;
         case PAL_CRYPTO_AEAD_SET_NONCE:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
-            return psa_aead_set_nonce(aead_operation, buffer, size);
+            //return psa_aead_set_nonce(aead_operation, buffer, size);
+            return 0;
         case PAL_CRYPTO_AEAD_SET_LENGTHS:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             size = va_arg(valist, size_t);
             plaintext_size = va_arg(valist, size_t);
-            return psa_aead_set_lengths(aead_operation, size, plaintext_size);
+            //return psa_aead_set_lengths(aead_operation, size, plaintext_size);
+            return 0;
         case PAL_CRYPTO_AEAD_UPDATE_AD:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
-            return psa_aead_update_ad(aead_operation, buffer, size);
+            //return psa_aead_update_ad(aead_operation, buffer, size);
+            return 0;
         case PAL_CRYPTO_AEAD_UPDATE:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             plaintext = va_arg(valist, uint8_t*);
@@ -258,8 +275,9 @@ int32_t pal_crypto_function(int type, va_list valist)
             ciphertext = va_arg(valist, uint8_t*);
             ciphertext_size = va_arg(valist, size_t);
             length = va_arg(valist, size_t*);
-            return psa_aead_update(aead_operation, plaintext, plaintext_size, ciphertext,
-            ciphertext_size, length);
+            //return psa_aead_update(aead_operation, plaintext, plaintext_size, ciphertext,
+            //ciphertext_size, length);
+            return 0;
         case PAL_CRYPTO_AEAD_FINISH:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             ciphertext = va_arg(valist, uint8_t*);
@@ -268,8 +286,9 @@ int32_t pal_crypto_function(int type, va_list valist)
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
             tag_length = (size_t *)va_arg(valist, size_t*);
-            return psa_aead_finish(aead_operation, ciphertext, ciphertext_size, length, buffer,
-            size, tag_length);
+            //return psa_aead_finish(aead_operation, ciphertext, ciphertext_size, length, buffer,
+            //size, tag_length);
+            return 0;
         case PAL_CRYPTO_AEAD_VERIFY:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
             plaintext = va_arg(valist, uint8_t*);
@@ -277,10 +296,12 @@ int32_t pal_crypto_function(int type, va_list valist)
             length = (size_t *)va_arg(valist, size_t*);
             buffer = va_arg(valist, uint8_t*);
             size = va_arg(valist, size_t);
-            return psa_aead_verify(aead_operation, plaintext, plaintext_size, length, buffer, size);
+            //return psa_aead_verify(aead_operation, plaintext, plaintext_size, length, buffer, size);
+            return 0;
         case PAL_CRYPTO_AEAD_ABORT:
             aead_operation = va_arg(valist, psa_aead_operation_t *);
-            return psa_aead_abort(aead_operation);
+            //return psa_aead_abort(aead_operation);
+            return 0;
         case PAL_CRYPTO_MAC_SIGN_SETUP:
             mac_operation = va_arg(valist, psa_mac_operation_t*);
             key_handle = (psa_key_handle_t)va_arg(valist, int);
@@ -318,8 +339,9 @@ int32_t pal_crypto_function(int type, va_list valist)
             ciphertext = va_arg(valist, uint8_t*);
             ciphertext_size = va_arg(valist, size_t);
             length = va_arg(valist, size_t*);
-            return psa_mac_compute(key_handle, alg, plaintext, plaintext_size, ciphertext,
-            ciphertext_size, length);
+            //return psa_mac_compute(key_handle, alg, plaintext, plaintext_size, ciphertext,
+            //ciphertext_size, length);
+            return 0;
         case PAL_CRYPTO_MAC_VERIFY:
             key_handle = (psa_key_handle_t)va_arg(valist, int);
             alg = va_arg(valist, psa_algorithm_t);
@@ -327,8 +349,9 @@ int32_t pal_crypto_function(int type, va_list valist)
             plaintext_size = va_arg(valist, size_t);
             ciphertext = va_arg(valist, uint8_t*);
             ciphertext_size = va_arg(valist, size_t);
-            return psa_mac_verify(key_handle, alg, plaintext, plaintext_size, ciphertext,
-            ciphertext_size);
+            //return psa_mac_verify(key_handle, alg, plaintext, plaintext_size, ciphertext,
+            //ciphertext_size);
+            return 0;
         case PAL_CRYPTO_ASYMMTERIC_ENCRYPT:
             key_handle = (psa_key_handle_t)va_arg(valist, int);
             alg = va_arg(valist, psa_algorithm_t);
@@ -400,8 +423,9 @@ int32_t pal_crypto_function(int type, va_list valist)
             ciphertext = va_arg(valist, uint8_t *);
             ciphertext_size = va_arg(valist, size_t);
             length = va_arg(valist, size_t*);
-            return psa_cipher_encrypt(key_handle, alg, plaintext, size, ciphertext, ciphertext_size,
-            length);
+            //return psa_cipher_encrypt(key_handle, alg, plaintext, size, ciphertext, ciphertext_size,
+            //length);
+            return 0;
         case PAL_CRYPTO_CIPHER_DECRYPT:
             key_handle = (psa_key_handle_t)va_arg(valist, int);
             alg = va_arg(valist, psa_algorithm_t);
@@ -410,8 +434,9 @@ int32_t pal_crypto_function(int type, va_list valist)
             ciphertext = va_arg(valist, uint8_t *);
             ciphertext_size = va_arg(valist, size_t);
             length = va_arg(valist, size_t*);
-            return psa_cipher_decrypt(key_handle, alg, plaintext, size, ciphertext, ciphertext_size,
-            length);
+            //return psa_cipher_decrypt(key_handle, alg, plaintext, size, ciphertext, ciphertext_size,
+            //length);
+            return 0;
         case PAL_CRYPTO_ASYMMTERIC_SIGN:
             key_handle = (psa_key_handle_t)va_arg(valist, int);
             alg = va_arg(valist, psa_algorithm_t);
