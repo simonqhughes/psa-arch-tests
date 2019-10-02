@@ -22,7 +22,7 @@
 
 test_s001
 test_s002
-test_s003
+#test_s003: TODO: fix: test spins forever trying to use all available storage
 test_s004
 test_s005
 test_s006
