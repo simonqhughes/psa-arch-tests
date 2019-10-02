@@ -89,28 +89,26 @@ int32_t psa_sst_valid_offset_success(caller_security_t caller)
     uint32_t status, data_len, offset = TEST_BUFF_SIZE;
     uint32_t p_data_length = 0;
 
+    /* Use for test failure workaround to take copy of data_len */
+    uint32_t data_len_copy = 0;
+
     /* Set data for UID */
     status = SST_FUNCTION(s008_data[1].api, uid, TEST_BUFF_SIZE, write_buff, PSA_STORAGE_FLAG_NONE);
     TEST_ASSERT_EQUAL(status, s008_data[1].status, TEST_CHECKPOINT_NUM(1));
 
     /* Case where offset + datalen =  data_size */
-    val->print(PRINT_TEST, "[Check 1] Try to access data with varying valid offset\n", 0);
     while (offset > 0)
     {
          data_len = TEST_BUFF_SIZE - offset;
          memset(read_buff, 0, TEST_BUFF_SIZE);
-         val->print(PRINT_TEST, "[Check 1.5] data_len=%u\n", data_len);
-         val->print(PRINT_TEST, "[Check 1.6.0] offset=%u\n", offset);
          status = SST_FUNCTION(s008_data[2].api, uid, offset, data_len, read_buff, &p_data_length);
-         val->print(PRINT_TEST, "[Check 1.6.0.1] data_len=%u\n", data_len);
          TEST_ASSERT_EQUAL(status, s008_data[2].status, TEST_CHECKPOINT_NUM(2));
-         val->print(PRINT_TEST, "[Check 1.6.1] data_len=%u\n", data_len);
          TEST_ASSERT_MEMCMP(read_buff, write_buff + offset, data_len, TEST_CHECKPOINT_NUM(3));
-         val->print(PRINT_TEST, "[Check 1.6.2] data_len=%u\n", data_len);
-         val->print(PRINT_TEST, "[Check 1.6.3] offset=%u\n", offset);
-         val->print(PRINT_TEST, "[Check 1.6.4] p_data_length=%u\n", p_data_length);
 
-         // fix-up: re-compute data_len again:
+         /* SST_FUNCTION() variadic function macro has side effect of
+          * setting seting data_len = 0. Work around this problem by
+          * recalculating data_len before testing.
+          */
          data_len = TEST_BUFF_SIZE - offset;
          TEST_ASSERT_EQUAL(p_data_length, data_len, TEST_CHECKPOINT_NUM(4));
          offset >>= 1;
@@ -121,9 +119,16 @@ int32_t psa_sst_valid_offset_success(caller_security_t caller)
     /* Case where offset + datalen <  data_size */
     while (offset > 0)
     {
+        /* SST_FUNCTION() variadic function macro seems to have side effect of
+         * setting seting data_len = 0. Work around this problem by testing copy
+         * of data_len, rather than the data_len supplied to SST_FUNCTION().
+         */
+         data_len_copy = data_len;
          status = SST_FUNCTION(s008_data[4].api, uid, offset, data_len, read_buff, &p_data_length);
          TEST_ASSERT_EQUAL(status, s008_data[4].status, TEST_CHECKPOINT_NUM(5));
          TEST_ASSERT_MEMCMP(read_buff, write_buff + offset, data_len, TEST_CHECKPOINT_NUM(6));
+         /* set data_len back to value copied earlier*/
+         data_len = data_len_copy;
          TEST_ASSERT_EQUAL(p_data_length, data_len, TEST_CHECKPOINT_NUM(7));
          offset >>= 1;
          data_len <<= 1;
