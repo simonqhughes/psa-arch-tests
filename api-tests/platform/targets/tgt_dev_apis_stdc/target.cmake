@@ -51,7 +51,6 @@ function(_create_psa_storage_exe _exe_name _api_dir)
 
 	# Create list of libraries to link to test binary
 	list(APPEND EXE_LIBS
-		${PROJECT_BINARY_DIR}/dev_apis/${_api_dir}/test_combine.a
 		${PROJECT_BINARY_DIR}/val/val_nspe.a
 		${PROJECT_BINARY_DIR}/platform/pal_nspe.a
 		${PROJECT_BINARY_DIR}/dev_apis/${_api_dir}/test_combine.a
